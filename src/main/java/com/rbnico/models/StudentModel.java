@@ -1,10 +1,9 @@
 package com.rbnico.models;
 
-public class StudentModel {
+public class StudentModel extends EntityModel {
     private String name;
     private String lastName;
     private int age;
-    private TeacherModel teacher;
 
     public StudentModel() {
     }
@@ -27,23 +26,12 @@ public class StudentModel {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public int getAge() {
-        return age;
-    }
+    public int getAge() { return age; }
 
     public void setAge(int age) {
         this.age = age;
     }
 
-    public TeacherModel getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(TeacherModel teacher) {
-        this.teacher = teacher;
-    }
 }

@@ -14,7 +14,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class StudentRepository implements Repository<StudentModel, String> {
 
-    private String collection = "teachers";
+    private final String collection = "students";
 
     @Override
     public boolean insertOne(StudentModel entity) {
@@ -40,7 +40,7 @@ public class StudentRepository implements Repository<StudentModel, String> {
 
     @Override
     public StudentModel find(String name) {
-        StudentModel student = (StudentModel) getCollection().find(new Document("name", name));
+        StudentModel student = getCollection().find(eq("name", name), StudentModel.class).first();
         getClient().close();
         return student;
     }
