@@ -2,7 +2,6 @@ package com.rbnico.repositories;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
-import com.rbnico.MongoUtility;
 import com.rbnico.models.TeacherModel;
 import org.bson.Document;
 
@@ -15,12 +14,12 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class TeacherRepository implements Repository<TeacherModel, String> {
 
-    private String collection = "teachers";
+    private final String collection = "teachers";
 
     @Override
     public boolean insertOne(TeacherModel entity) {
         getCollection().insertOne(entity);
-//        getClient().close();
+        getClient().close();
         return true;
     }
 
@@ -41,8 +40,8 @@ public class TeacherRepository implements Repository<TeacherModel, String> {
 
     @Override
     public TeacherModel find(String name) {
-        TeacherModel teacher = (TeacherModel) getCollection().find(new Document("name", name));
-//        getClient().close();
+        TeacherModel teacher = (TeacherModel) getCollection().find(eq("name", name), TeacherModel.class).first();
+        getClient().close();
         return teacher;
     }
 
