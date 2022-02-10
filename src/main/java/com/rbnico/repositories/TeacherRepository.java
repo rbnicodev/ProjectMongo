@@ -39,8 +39,8 @@ public class TeacherRepository implements Repository<TeacherModel, String> {
     }
 
     @Override
-    public TeacherModel find(String name) {
-        TeacherModel teacher = (TeacherModel) getCollection().find(eq("name", name), TeacherModel.class).first();
+    public TeacherModel find(Long id) {
+        TeacherModel teacher = (TeacherModel) getCollection().find(eq("id", id), TeacherModel.class).first();
         getClient().close();
         return teacher;
     }

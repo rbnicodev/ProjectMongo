@@ -14,7 +14,7 @@ public interface Repository<E, I>{
     boolean insertOne(E entity) throws MongoException;
     boolean insertMany(List<E> entities) throws MongoException;
     boolean update(E entity) throws MongoException;
-    E find(I id) throws MongoException;
+    E find(Long id) throws MongoException;
     List<E> findAll() throws MongoException;
     boolean delete(I id) throws MongoException;
     Document toDocument(E entity);

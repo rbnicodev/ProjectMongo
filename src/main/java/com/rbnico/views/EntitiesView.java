@@ -65,17 +65,20 @@ public class EntitiesView {
     }
 
     void find() {
-        System.out.println("Introduce el nombre del " + sEntity + " que quieres buscar");
-        String name = scanner.nextLine();
+        System.out.println("Introduce el id del " + sEntity + " que quieres buscar");
+        String sId = scanner.nextLine();
+        boolean number = false;
+        Long id = -1L;
+        try { id = Long.parseLong(sId); number = true; } catch (NumberFormatException e) { System.out.println("EntitiesView.update(), "+e.getMessage());}
 
         if(type == 1) {
-            TeacherModel teacher = (TeacherModel)repository.find(name);
+            TeacherModel teacher = (TeacherModel)repository.find(id);
             if (teacher != null) {
                 System.out.println("Nombre: " + teacher.getName());
                 System.out.println("Apellido: " + teacher.getLastName());
             }
         } else {
-            StudentModel student = (StudentModel)repository.find(name);
+            StudentModel student = (StudentModel)repository.find(id);
             if(student != null) {
                 System.out.println("Nombre: " + student.getName());
                 System.out.println("Apellido: " + student.getLastName());
@@ -86,21 +89,29 @@ public class EntitiesView {
 
     void update() {
         System.out.println("Introduce el ID del registro que quieres actualizar: ");
-        String id = scanner.nextLine();
-        System.out.println("Introduce el nuevo nombre: ");
-        String newName = scanner.nextLine();
+        String sId = scanner.nextLine();
+        boolean number = false;
+        Long id = -1L;
+        try { id = Long.parseLong(sId); number = true; } catch (NumberFormatException e) { System.out.println("EntitiesView.update(), "+e.getMessage());}
+        EntityModel oldEntity = (EntityModel) repository.find(id);
+        if(number && oldEntity != null)
+        {
+//            System.out.println("Introduce el nuevo nombre: ");
+//            String newName = scanner.nextLine();
+//
+//            System.out.println("Introduce el nuevo apellido: ");
+//            String newLastName = scanner.nextLine();
+//            int age;
+//            if(type == 2) {
+//                System.out.println("Introduce la edad del alumno:");
+//                String iage = scanner.nextLine();
+//                try {age = Integer.parseInt(iage);} catch (NumberFormatException e) { System.out.println(e.getMessage()); age = 0;}
+//                repository.update(new StudentModel(newName, newLastName, age));
+//            }
+//            repository.update(new TeacherModel(newName, newLastName));
+        } else { System.out.println("Ha habido algún error");
 
-        System.out.println("Introduce el nuevo apellido: ");
-        String newLastName = scanner.nextLine();
-        int age;
-        if(type == 2) {
-            System.out.println("Introduce la edad del alumno:");
-            String iage = scanner.nextLine();
-            try {age = Integer.parseInt(iage);} catch (NumberFormatException e) { System.out.println(e.getMessage()); age = 0;}
-            repository.update(new StudentModel(newName, newLastName, age));
-        }
-        repository.update(new TeacherModel(newName, newLastName));
-    }
+    }}
 
     void delete() {
         System.out.println("Introduce el nombre del registro que quieres actualizar: ");

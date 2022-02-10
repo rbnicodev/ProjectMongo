@@ -33,14 +33,14 @@ public class StudentRepository implements Repository<StudentModel, String> {
 
     @Override
     public boolean update(StudentModel entity) {
-        getCollection().replaceOne(eq("name", entity.getName()), entity);
+        getCollection().replaceOne(eq("id", entity.getId()), entity);
         getClient().close();
         return true;
     }
 
     @Override
-    public StudentModel find(String name) {
-        StudentModel student = getCollection().find(eq("name", name), StudentModel.class).first();
+    public StudentModel find(Long id) {
+        StudentModel student = getCollection().find(eq("id", id), StudentModel.class).first();
         getClient().close();
         return student;
     }
