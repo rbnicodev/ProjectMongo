@@ -85,8 +85,8 @@ public class EntitiesView {
     }
 
     void update() {
-        System.out.println("Introduce el nombre del registro que quieres actualizar: ");
-        String name = scanner.nextLine();
+        System.out.println("Introduce el ID del registro que quieres actualizar: ");
+        String id = scanner.nextLine();
         System.out.println("Introduce el nuevo nombre: ");
         String newName = scanner.nextLine();
 
