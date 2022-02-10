@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ProjectMongo" />
+        <module name="SimplyTeachingMongo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ProjectMongo" target="1.8" />
+      <module name="SimplyTeachingMongo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

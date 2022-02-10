@@ -1,23 +1,16 @@
 package com.rbnico.repositories;
 
-import com.mongodb.MongoException;
-import com.mongodb.client.MongoCollection;
-import com.rbnico.EnvironmentVars;
 import org.bson.Document;
 
 import java.util.List;
 
-public interface Repository<E, I>{
-
-    String db = EnvironmentVars.stringDb;
-
-    boolean insertOne(E entity) throws MongoException;
-    boolean insertMany(List<E> entities) throws MongoException;
-    boolean update(E entity) throws MongoException;
-    E find(Long id) throws MongoException;
-    List<E> findAll() throws MongoException;
-    boolean delete(I id) throws MongoException;
+public interface Repository<E, I> {
+    boolean create(E entity);
+    E find(I id);
+    List<E> findAll();
+    boolean update(E newEntity);
+    boolean delete(I id);
+    E findBy(Object i, Object o);
     Document toDocument(E entity);
-    E fromDocument(Document doc);
-    MongoCollection<E> getCollection();
+    E fromDocument(Document document);
 }

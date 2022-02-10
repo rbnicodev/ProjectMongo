@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProjectMongo.iml" filepath="$PROJECT_DIR$/ProjectMongo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SimplyTeachingMongo.iml" filepath="$PROJECT_DIR$/SimplyTeachingMongo.iml" />
     </modules>
   </component>
 </project>
