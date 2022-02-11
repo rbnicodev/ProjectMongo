@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class EntitiesView {
     Scanner scanner = new Scanner(System.in);
     Controller controller;
+    EditEntities editor;
     int type;
     boolean exit = false;
     String sENTITIES = "";
@@ -34,11 +35,13 @@ public class EntitiesView {
             sENTITIES = "PROFESORES";
             sEntity = "profesor";
             entity = new Teacher();
+            editor = new TeacherEdit();
         } else {
             controller = new StudentController();
             sENTITIES = "ALUMNOS";
             sEntity = "alumno";
             entity = new Student();
+            editor = new StudentEdit();
         }
     }
 
@@ -46,26 +49,51 @@ public class EntitiesView {
         System.out.println("\n\n" + sENTITIES + "\n\n");
         System.out.println("Indica qué quieres hacer");
         System.out.println("0.- Introducir un registro");
-        System.out.println("1.- Buscar un registro");
+        System.out.println("1.- Visualizar un registro");
         System.out.println("2.- Modificar un registro");
         System.out.println("3.- Borrar un registro");
         System.out.println("4.- Mostrar todos los registros");
-        System.out.println("5.- Mostrar con filtros");
+        System.out.println("5.- Mostrar con filtro");
         System.out.println("6.- SALIR AL MENÚ PRINCIPAL");
         String option = scanner.nextLine();
         if("0".equals(option)) {
-            controller.create();
+            editor.create();
         }
         else if ("1".equals(option)) {
-            controller.find();
+            System.out.println("Introduce el ID del registro que quieres visualizar");
+            int id;
+            String[] entity = null;
+            try {
+                id = Integer.parseInt(scanner.nextLine());
+                entity = (String[])controller.find(id);
+                for (int i = 0; i < entity.length; i++) {
+                    System.out.println(entity[i]);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
         } else if ("2".equals(option)) {
-            controller.update();
+            editor.update();
         } else if ("3".equals(option)) {
-            controller.delete();
+            System.out.println("Introduce el ID del registro que quieres eliminar");
+            try {
+                int id = Integer.parseInt(scanner.nextLine());
+                controller.delete(id);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Ha habido algún problema");
+            }
         } else if ("4".equals(option)) {
-            controller.findAll();
+            String[][] entities = (String[][]) controller.findAll();
+            for (int i = 0; i < entities.length; i++) {
+                System.out.println('\n');
+                for (int j = 0; j < entities[i].length; j++) {
+                    System.out.print(entities[i][j] + ", ");
+                }
+            }
         } else if ("5".equals(option)) {
-            controller.findBy();
+            editor.findWithFilter();
         } else if ("6".equals(option)) {
             exit = true;
         } else {

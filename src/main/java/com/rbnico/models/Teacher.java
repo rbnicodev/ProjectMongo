@@ -2,13 +2,26 @@ package com.rbnico.models;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Teacher extends EntityModel{
     @BsonId
-    private int id;
+    @Id
+    @GeneratedValue
+    public int id;
     private String name;
     private String lastname;
     private int segSocial;
     private double salary;
+
+    @OneToMany
+    List<Student> students = new ArrayList<>();
 
     public Teacher() {
     }
@@ -61,6 +74,14 @@ public class Teacher extends EntityModel{
         this.salary = salary;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -69,6 +90,7 @@ public class Teacher extends EntityModel{
                 ", lastname='" + lastname + '\'' +
                 ", segSocial=" + segSocial +
                 ", salary=" + salary +
+                ", students=" + students +
                 '}';
     }
 }

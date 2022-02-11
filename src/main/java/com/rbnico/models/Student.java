@@ -2,12 +2,20 @@ package com.rbnico.models;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 
+import javax.persistence.*;
+
+@Entity
 public class Student extends EntityModel {
-    @BsonId
+    @BsonId //MONGO
+    @Id //JPA
+    @GeneratedValue
     private int id;
     private String name;
     private String lastname;
     private int age;
+
+    @ManyToOne
+    private Teacher teacher;
 
     public Student() {
     }
@@ -51,6 +59,14 @@ public class Student extends EntityModel {
         this.age = age;
     }
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -58,6 +74,7 @@ public class Student extends EntityModel {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", age=" + age +
+                ", teacher=" + teacher +
                 '}';
     }
 }

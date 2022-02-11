@@ -1,5 +1,6 @@
 package com.rbnico.repositories;
 
+import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.rbnico.MongoUtility;
@@ -17,6 +18,7 @@ import static com.mongodb.client.model.Filters.lte;
 public class TeachersRepository implements Repository<Teacher, Integer>{
 
     MongoCollection<Document> collection = MongoUtility.getDatabase().getCollection("teachers");
+    StudentsRepository studentsRepository = new StudentsRepository();
 
     @Override
     public boolean create(Teacher entity) {
@@ -52,8 +54,14 @@ public class TeachersRepository implements Repository<Teacher, Integer>{
 
     @Override
     public boolean update(Teacher newEntity) {
-        Teacher oldEntity = find(newEntity.getId());
-        return collection.replaceOne(toDocument(oldEntity), toDocument(newEntity)).wasAcknowledged();
+        try {
+            delete(newEntity.getId());
+            create(newEntity);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -62,32 +70,39 @@ public class TeachersRepository implements Repository<Teacher, Integer>{
     }
 
     @Override
-    public Teacher findBy(Object i, Object o) {
-        return fromDocument(
-                Objects.requireNonNull(collection
-                        .find(and(gte("salary", (Integer)i), lte("salary", (Integer)o)))
-                        .first()));
+    public List<Teacher> findBy(Object i, Object o) {
+        List<Teacher> teachers = new ArrayList<>();
+        collection.find(and(gte("salary", (Integer)i), lte("salary", (Integer)o))).forEach((Block<? super Document>) document -> teachers.add(fromDocument(document)));
+
+        return teachers;
     }
 
 
-    @Override
     public Document toDocument(Teacher entity) {
+        List<Document> students = new ArrayList<>();
+        for(Student s : entity.getStudents()) {
+            students.add(studentsRepository.toDocument(s));
+        }
         return new Document()
                 .append("_id", entity.getId())
                 .append("name", entity.getName())
                 .append("lastname", entity.getLastname())
                 .append("seg_social", entity.getSegSocial())
-                .append("salary", entity.getSalary());
+                .append("salary", entity.getSalary())
+                .append("students", students);
     }
 
-    @Override
     public Teacher fromDocument(Document document) {
+
         Teacher teacher = new Teacher();
         teacher.setId(document.getInteger("_id"));
         teacher.setName(document.getString("name"));
         teacher.setLastname(document.getString("lastname"));
         teacher.setSegSocial(document.getInteger("seg_social"));
         teacher.setSalary(document.getDouble("salary"));
+        for(Document student : document.getList("students", Document.class)) {
+            teacher.getStudents().add(studentsRepository.fromDocument(student));
+        }
         return teacher;
     }
 }

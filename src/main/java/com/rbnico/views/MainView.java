@@ -10,7 +10,7 @@ public class MainView {
     }
 
 
-    void menu() {
+    public void menu() {
         System.out.println("Indica con qué registros quieres trabajar:");
         System.out.println("1.- Profesores");
         System.out.println("2.- Alumnos");
@@ -22,6 +22,7 @@ public class MainView {
             EntitiesView entitiesView = new EntitiesView(2);
         } else if("3".equals(option)) {
             exit = true;
+            System.exit(0);
         } else {
             System.out.println("\n\nHa habido un error\n\n");
         }

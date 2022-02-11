@@ -1,7 +1,9 @@
 package com.rbnico.repositories;
 
+import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.UpdateOptions;
 import com.rbnico.MongoUtility;
 import org.bson.Document;
 import com.rbnico.models.Student;
@@ -51,8 +53,14 @@ public class StudentsRepository implements Repository <Student, Integer>{
 
     @Override
     public boolean update(Student newEntity) {
-        Student oldEntity = find(newEntity.getId());
-        return collection.replaceOne(toDocument(oldEntity), toDocument(newEntity)).wasAcknowledged();
+        try {
+            delete(newEntity.getId());
+            create(newEntity);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -61,15 +69,14 @@ public class StudentsRepository implements Repository <Student, Integer>{
     }
 
     @Override
-    public Student findBy(Object i, Object o) {
-        return fromDocument(
-                Objects.requireNonNull(collection
-                        .find(and(gte("age", (Integer)i), lte("age", (Integer)o)))
-                        .first()));
+    public List<Student> findBy(Object i, Object o) {
+        List<Student> students = new ArrayList<>();
+        collection.find(and(gte("age", (Integer)i), lte("age", (Integer)o))).forEach((Block<? super Document>) document -> students.add(fromDocument(document)));
+
+        return students;
     }
 
 
-    @Override
     public Document toDocument(Student entity) {
         Document document = new Document()
                 .append("_id", entity.getId())
@@ -79,7 +86,6 @@ public class StudentsRepository implements Repository <Student, Integer>{
         return document;
     }
 
-    @Override
     public Student fromDocument(Document document) {
         Student student = new Student();
 

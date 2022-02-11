@@ -10,7 +10,5 @@ public interface Repository<E, I> {
     List<E> findAll();
     boolean update(E newEntity);
     boolean delete(I id);
-    E findBy(Object i, Object o);
-    Document toDocument(E entity);
-    E fromDocument(Document document);
+    List<E> findBy(Object i, Object o);
 }
